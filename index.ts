@@ -1456,7 +1456,12 @@ export default class DataStream {
      * Defaults to ASCII.
      * @param {?number} length The number of characters to write.
      */
-    writeString(s: string, /** @deprecated */ encoding?: string, length?: number): DataStream {
+    writeString(
+        s: string,
+        /** @deprecated */
+        encoding?: string,
+        length?: number
+    ): DataStream {
         if (encoding == null || encoding === "ASCII") {
             if (length != null) {
                 let i: number;
