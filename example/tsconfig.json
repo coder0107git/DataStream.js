@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
     "outDir": "./dist/",
-    "target": "es5",
-    "module": "commonjs",
-    "lib": ["es2015", "dom"],
-//    "moduleResolution": "node",
-    "sourceMap": true
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "moduleResolution": "Bundler",
   },
   "include": ["*.ts"]
 }

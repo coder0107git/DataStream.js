@@ -1,10 +1,11 @@
 {
   "name": "@coder0107git/datastream-js",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "DataStream.js is a library for reading data from ArrayBuffers",
   "type": "module",
-  "main": "index.js",
-  "module": "es/index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git://github.com/coder0107git/DataStream.js.git"
@@ -35,7 +36,7 @@
   },
   "scripts": {
     "fmt": "prettier --write \"{.,test,example}/*.ts\"",
-    "build": "tsc && tsc -p tsconfig-es.json",
+    "build": "tsc",
     "test": "NODE_OPTIONS='--import=tsx' nyc mocha --project test/tsconfig.json test/**test.ts",
     "prepare": "npm run fmt && npm run build"
   },

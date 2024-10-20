@@ -4,7 +4,9 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "declaration": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "outDir": "dist",
+    "allowSyntheticDefaultImports": true
   },
   "include": ["*.ts"]
 }

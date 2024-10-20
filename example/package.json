@@ -1,12 +1,16 @@
 {
   "name": "example",
-  "devDependencies": {
-    "ts-loader": "^2.3.7",
-    "typescript": "^2.5.3",
-    "webpack": "^3.6.0"
-  },
   "dependencies": {
     "@types/jpeg-js": "^0.3.0",
-    "jpeg-js": "^0.3.3"
+    "buffer": "^6.0.3",
+    "jpeg-js": "^0.4.4",
+    "typescript": "^2.9.2",
+    "vite": "^5.4.9"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "dev": "vite"
   }
 }
