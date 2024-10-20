@@ -3,7 +3,7 @@ import jpeg = require("jpeg-js");
 
 document
     .querySelector('input[type="file"]')
-    .addEventListener("change", function(e) {
+    .addEventListener("change", function (e) {
         var reader = new FileReader();
 
         var tiffByteSize = {
@@ -29,12 +29,12 @@ document
             "count",
             "uint32",
             "value",
-            function(ds, s) {
+            function (ds, s) {
                 var p = ds.position;
                 if (s.count * tiffByteSize[s.type] > 4) {
                     ds.seek(ds.readUint32());
                 }
-                var v: any = {error: "Unknown TIFF Field"};
+                var v: any = { error: "Unknown TIFF Field" };
                 switch (s.type) {
                     case 1:
                         v = ds.readUint8Array(s.count);
@@ -81,7 +81,7 @@ document
             }
         ];
 
-        var parseTIFF = function(u8) {
+        var parseTIFF = function (u8) {
             var rv: any = {};
             var ds = new DataStream(u8);
             rv.endianness = ds.readString(2);
@@ -197,7 +197,7 @@ document
 
         var jpegStruct = [
             "start",
-            function(ds) {
+            function (ds) {
                 var t = ds.readUint16();
                 return t == 0xffd8 ? t : null;
             },
@@ -206,19 +206,19 @@ document
                 "[]",
                 [
                     "tag",
-                    function(ds) {
+                    function (ds) {
                         var t = ds.readUint16();
                         return t == 0xffd9 ? null : t;
                     },
                     "tagName",
-                    function(ds, s) {
+                    function (ds, s) {
                         return jpegMarkers[s.tag] || "Unknown";
                     },
                     "length",
                     "uint16be",
                     "data",
                     {
-                        get: function(ds, s) {
+                        get: function (ds, s) {
                             switch (s.tag) {
                                 case 0xffe1: // EXIF
                                     var exif = ds.readString(6);
@@ -301,7 +301,7 @@ document
                                                     s.length - 2
                                                 );
                                             }
-                                            return {jfif: jfif, data: rv};
+                                            return { jfif: jfif, data: rv };
                                         } else {
                                             ds.position -= 5;
                                             return ds.readString(s.length - 2);
@@ -358,13 +358,13 @@ document
                 "*"
             ],
             "end",
-            function(ds) {
+            function (ds) {
                 var t = ds.readUint16();
                 return t == 0xffd9 ? t : null;
             }
         ];
 
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             var ds = new DataStream(this.result);
             ds.endianness = DataStream.BIG_ENDIAN;
             var obj = ds.readStruct(jpegStruct) || parseTIFF(this.result);

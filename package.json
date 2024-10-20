@@ -2,11 +2,12 @@
   "name": "datastream-js",
   "version": "1.0.7",
   "description": "DataStream.js is a library for reading data from ArrayBuffers",
+  "type": "module",
   "main": "index.js",
   "module": "es/index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/ohze/DataStream.js.git"
+    "url": "git://github.com/coder0107git/DataStream.js.git"
   },
   "keywords": [
     "datastream",
@@ -18,40 +19,31 @@
   ],
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/ohze/DataStream.js/issues"
+    "url": "https://github.com/coder0107git/DataStream.js/issues"
   },
-  "homepage": "https://github.com/ohze/DataStream.js",
+  "homepage": "https://github.com/coder0107git/DataStream.js",
   "readmeFilename": "README.md",
-  "dependencies": {
-    "text-encoding": "^0.6.4"
-  },
   "devDependencies": {
-    "@types/chai": "^4.0.4",
-    "@types/mocha": "^2.2.43",
-    "@types/text-encoding": "0.0.32",
-    "chai": "^4.1.2",
-    "mocha": "^4.0.1",
-    "nyc": "^11.2.1",
-    "prettier": "^1.7.4",
-    "publish-please": "^2.3.1",
-    "ts-node": "^3.3.0",
-    "tslint": "^5.7.0",
-    "tslint-config-prettier": "^1.5.0",
-    "tslint-config-standard": "^6.0.1",
-    "typescript": "^2.5.3"
+    "@types/chai": "^5.0.0",
+    "@types/mocha": "^10.0.9",
+    "chai": "^5.1.1",
+    "mocha": "^10.7.3",
+    "nyc": "^17.1.0",
+    "prettier": "^3.3.3",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3"
   },
   "scripts": {
     "fmt": "prettier --write \"{.,test,example}/*.ts\"",
     "build": "tsc && tsc -p tsconfig-es.json",
-    "lint": "tslint -p .",
-    "lint-fix": "tslint -c tslint.json --fix \"{.,test}/*.ts\" -t verbose",
-    "test": "nyc mocha -r ts-node/register --project test/tsconfig.json test/**test.ts",
-    "publish-please": "publish-please",
-    "prepare": "npm run fmt && npm run build",
-    "prepublishOnly": "publish-please guard"
+    "test": "NODE_OPTIONS='--import=tsx' nyc mocha --project test/tsconfig.json test/**test.ts",
+    "prepare": "npm run fmt && npm run build"
   },
   "prettier": {
-    "bracketSpacing": false,
-    "tabWidth": 4
+    "bracketSpacing": true,
+    "tabWidth": 4,
+    "trailingComma": "none",
+    "arrowParens": "avoid",
+    "endOfLine": "auto"
   }
 }

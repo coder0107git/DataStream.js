@@ -1,5 +1,5 @@
-import DataStream, {TypedArray, TypeDef} from "..";
-import {expect, assert} from "chai";
+import DataStream, { TypedArray, TypeDef } from "../index";
+import { expect, assert } from "chai";
 import "mocha";
 
 const sameMembers = (typedArr: TypedArray, arr: any[], msg?: string) =>
@@ -17,7 +17,6 @@ const TypedArrays = {
     Float64Array
 };
 
-// tslint:disable:no-shadowed-variable
 describe("DataStream", () => {
     it("read/write", () => {
         // prettier-ignore
@@ -83,7 +82,7 @@ describe("DataStream", () => {
             "len", "uint16",
             "greet", "string,utf-8:len"
         ]);
-        assert.deepEqual(o, {num: 3, len: 9, greet});
+        assert.deepEqual(o, { num: 3, len: 9, greet });
         d.seek(1);
         expect(d.readUtf8WithLen()).equal(greet);
     });
@@ -263,7 +262,7 @@ describe("DataStream", () => {
         for (i = 0; i < ds2.byteLength / elen; i++) {
             assert.equal(rarr[i], arr[i]);
         }
-        ds2.buffer; // tslint:disable-line no-unused-expression
+        ds2.buffer;
         assert.throws(() => ds2["read" + t + "Array"](1));
     };
 
@@ -468,7 +467,7 @@ describe("DataStream", () => {
             "endNote", "uint8"
         ];
         const u4 = [0, 8, 1, 2, 3, 4, 5, 6, 255];
-        const ds4 = new DataStream(new Uint8Array(u4));
+        const ds4 = new DataStream(new Uint8Array(u4).buffer as ArrayBuffer);
         const o4: any = ds4.readStruct(def4);
         assert.equal(o4.length, 8);
         assert.equal(o4.endNote, 255);
@@ -531,7 +530,7 @@ describe("DataStream", () => {
         const ds6c = new DataStream();
 
         // struct to write don't have 'len' field
-        ds6c.writeStruct(def6, {greet}, true);
+        ds6c.writeStruct(def6, { greet }, true);
 
         ds6b.seek(0);
         const o6b = ds6b.readStruct(def6);
@@ -667,7 +666,7 @@ describe("DataStream", () => {
         dss.writeCString(s, s.length); // no zero terminate
         dss.seek(dp);
         assert.equal(s, dss.readCString(s.length));
-        dss.buffer; // tslint:disable-line no-unused-expression
+        dss.buffer;
         assert.equal(s, dss.readCString());
 
         dss = new DataStream();

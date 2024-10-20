@@ -1,5 +1,3 @@
-import {TextEncoder, TextDecoder} from "text-encoding";
-
 export type TypedArray =
     | Int8Array
     | Uint8Array
@@ -22,12 +20,11 @@ export type LenFn = (struct: object, ds: DataStream, def: StructRead) => any;
 export type StructRead =
     | string
     | StructReadFn
-    | {get: StructReadFn}
+    | { get: StructReadFn }
     | ["[]", string, string | LenFn]
     | StructReadArray;
 
 /** @deprecated use DataStream.read/write(TypeDef) instead of readStruct/writeStruct */
-// tslint:disable-next-line no-empty-interface
 export interface StructReadArray extends Array<StructRead> {}
 
 /** @deprecated use DataStream.read/write(TypeDef) instead of readStruct/writeStruct */
@@ -41,11 +38,10 @@ export type StructWriteFn = (
 export type StructWrite =
     | string
     | StructWriteFn
-    | {set: StructWriteFn}
+    | { set: StructWriteFn }
     | StructWriteArray;
 
 /** @deprecated use DataStream.read/write(TypeDef) instead of readStruct/writeStruct */
-// tslint:disable-next-line no-empty-interface
 export interface StructWriteArray extends Array<StructWrite> {}
 
 /**
@@ -58,7 +54,6 @@ export type Type =
     "Int8*" | "Int16*" | "Int32*" | "Uint8*" | "Uint16*" | "Uint32*" | "Float32*" | "Float64*" |
     "Utf8WithLen";
 
-// tslint:disable-next-line no-empty-interface
 export interface TypeArr extends Array<Type | TypeArr> {}
 
 /** [0] is object field's name to read from or write into.
@@ -73,7 +68,6 @@ export interface TypeArr extends Array<Type | TypeArr> {}
  *  ]
  */
 export type TypeDef1 = [string, Type | TypeDef];
-// tslint:disable-next-line no-empty-interface
 export interface TypeDef extends Array<TypeDef1> {}
 
 /**
@@ -93,7 +87,7 @@ export default class DataStream {
     constructor(
         arrayBuffer?:
             | ArrayBuffer
-            | {buffer: ArrayBuffer; byteOffset: number; byteLength: number},
+            | { buffer: ArrayBuffer; byteOffset: number; byteLength: number },
         byteOffset?: number,
         public endianness: boolean = DataStream.LITTLE_ENDIAN
     ) {
@@ -649,7 +643,6 @@ export default class DataStream {
             );
             this.mapInt32Array(arr.length, e);
         } else {
-            // tslint:disable-next-line prefer-for-of
             for (let i = 0; i < arr.length; i++) {
                 this.writeInt32(arr[i], e);
             }
@@ -678,7 +671,6 @@ export default class DataStream {
             );
             this.mapInt16Array(arr.length, e);
         } else {
-            // tslint:disable-next-line prefer-for-of
             for (let i = 0; i < arr.length; i++) {
                 this.writeInt16(arr[i], e);
             }
@@ -706,7 +698,6 @@ export default class DataStream {
             );
             this.mapInt8Array(arr.length);
         } else {
-            // tslint:disable-next-line prefer-for-of
             for (let i = 0; i < arr.length; i++) {
                 this.writeInt8(arr[i]);
             }
@@ -735,7 +726,6 @@ export default class DataStream {
             );
             this.mapUint32Array(arr.length, e);
         } else {
-            // tslint:disable-next-line prefer-for-of
             for (let i = 0; i < arr.length; i++) {
                 this.writeUint32(arr[i], e);
             }
@@ -764,7 +754,6 @@ export default class DataStream {
             );
             this.mapUint16Array(arr.length, e);
         } else {
-            // tslint:disable-next-line prefer-for-of
             for (let i = 0; i < arr.length; i++) {
                 this.writeUint16(arr[i], e);
             }
@@ -792,7 +781,6 @@ export default class DataStream {
             );
             this.mapUint8Array(arr.length);
         } else {
-            // tslint:disable-next-line prefer-for-of
             for (let i = 0; i < arr.length; i++) {
                 this.writeUint8(arr[i]);
             }
@@ -821,7 +809,6 @@ export default class DataStream {
             );
             this.mapFloat64Array(arr.length, e);
         } else {
-            // tslint:disable-next-line prefer-for-of
             for (let i = 0; i < arr.length; i++) {
                 this.writeFloat64(arr[i], e);
             }
@@ -850,7 +837,6 @@ export default class DataStream {
             );
             this.mapFloat32Array(arr.length, e);
         } else {
-            // tslint:disable-next-line prefer-for-of
             for (let i = 0; i < arr.length; i++) {
                 this.writeFloat32(arr[i], e);
             }
@@ -1102,9 +1088,8 @@ export default class DataStream {
      *
      * @type {boolean}
      */
-    static readonly endianness: boolean = new Int8Array(
-        new Int16Array([1]).buffer
-    )[0] > 0;
+    static readonly endianness: boolean =
+        new Int8Array(new Int16Array([1]).buffer)[0] > 0;
 
     /**
      * Copies byteLength bytes from the src buffer at srcOffset to the
@@ -1174,7 +1159,6 @@ export default class DataStream {
         );
         for (let i = 0; i < array.byteLength; i += array.BYTES_PER_ELEMENT) {
             for (
-                // tslint:disable-next-line one-variable-per-declaration
                 let j = i + array.BYTES_PER_ELEMENT - 1, k = i;
                 j > k;
                 j--, k++
@@ -1322,9 +1306,8 @@ export default class DataStream {
             if (typeof t === "string") {
                 if (t.endsWith("*")) {
                     const len = this.readUint16();
-                    o[v] = this["read" + t.substr(0, t.length - 1) + "Array"](
-                        len
-                    );
+                    o[v] =
+                        this["read" + t.substr(0, t.length - 1) + "Array"](len);
                 } else {
                     o[v] = this["read" + t]();
                 }
@@ -1469,11 +1452,11 @@ export default class DataStream {
      * Writes a string of desired length and encoding to the DataStream.
      *
      * @param {string} s The string to write.
-     * @param {?string} encoding The encoding for the written string data.
+     * @param {?string} encoding [DEPRECATED] The encoding for the written string data.
      * Defaults to ASCII.
      * @param {?number} length The number of characters to write.
      */
-    writeString(s: string, encoding?: string, length?: number): DataStream {
+    writeString(s: string, /** @deprecated */ encoding?: string, length?: number): DataStream {
         if (encoding == null || encoding === "ASCII") {
             if (length != null) {
                 let i: number;
@@ -1491,7 +1474,7 @@ export default class DataStream {
             }
         } else {
             this.writeUint8Array(
-                new TextEncoder(encoding).encode(s.substring(0, length))
+                new TextEncoder().encode(s.substring(0, length))
             );
         }
         return this;
@@ -1499,7 +1482,7 @@ export default class DataStream {
 
     /** writeUint16(utf8 length of `s`) then write utf8 `s` */
     writeUtf8WithLen(s: string): DataStream {
-        const arr = new TextEncoder("utf-8").encode(s);
+        const arr = new TextEncoder().encode(s);
         return this.writeUint16(arr.length).writeUint8Array(arr);
     }
 
@@ -1853,9 +1836,10 @@ export default class DataStream {
                 const len = tp[1];
                 tp = tp[0].split(",");
                 t = tp[0];
-                const charset = tp[1];
+                /** @deprecated */
+                const _charset = tp[1];
 
-                const uint8Array = new TextEncoder(charset).encode(
+                const uint8Array = new TextEncoder().encode(
                     struct[v as string]
                 );
                 struct[len] = uint8Array.length;
